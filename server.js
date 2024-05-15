@@ -10,6 +10,7 @@ const app = express();
 
 // Middleware Pipelane
 app.use(cors());
+app.use(express.json());
 app.use(logger('dev'));
 
 // Routers

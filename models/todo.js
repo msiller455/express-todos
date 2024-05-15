@@ -18,8 +18,16 @@ const todos = [
 
 module.exports = {
   getAll,
+  create,
 };
 
 function getAll() {
   return todos;
+}
+
+function create(newTodo) {
+  newTodo.done = false;
+  newTodo.id = todos.length + 1;
+  todos.push(newTodo);
+  return newTodo;
 }
