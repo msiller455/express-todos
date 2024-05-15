@@ -11,6 +11,15 @@ document
     evt.preventDefault();
     submitNewTodo();
   });
+
+todoListEl.addEventListener('click', function (evt) {
+  const btnList = document.querySelectorAll('ul button');
+  btnList.forEach((btn) => {
+    if (evt.target === btn) {
+      deleteTodo(evt.target);
+    }
+  });
+});
 /*------ Functions ------ */
 fetchTodos();
 
@@ -24,7 +33,7 @@ function render() {
   todoListEl.innerHTML = '';
   todos.forEach((todo) => {
     const liEl = document.createElement('li');
-    liEl.innerText = todo.task;
+    liEl.innerHTML = `${todo.task} <button id="${todo.id}">X</button>`;
     if (todo.done) {
       liEl.style.textDecoration = 'line-through';
     }
@@ -50,5 +59,19 @@ async function submitNewTodo() {
   todos.push(newTodo);
   inputEl.value = '';
 
+  render();
+}
+
+async function deleteTodo(btnEl) {
+  const todoId = btnEl.id;
+  const options = {
+    method: 'DELETE',
+  };
+
+  const response = await fetch(
+    `http://localhost:3000/todos/${todoId}`,
+    options
+  );
+  todos = await response.json();
   render();
 }
